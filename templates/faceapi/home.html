@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+Face API - Home
+{% endblock %}
+
+{% block main %}
+    <div>
+        <input id="input" name="photo" type="file" accept="image/*" onchange="loadFile(event)" ><br/><br/>
+        <img id="image-input" src="" width="250"><br/><br/>
+        <button type="submit" id="upload">Submit</button><br/><br/>
+        <img id="output" src="" width="250"><br/><br/>
+
+    </div>
+
+
+
+    <script>
+        inImageEl = document.getElementById("image-input")
+        outImageEl = document.getElementById("output")
+        inputFileEl = document.getElementById("input")
+
+        var loadFile = function(event) {
+            // var inImageEl = document.getElementById("image-input")
+            inImageEl.src = URL.createObjectURL(event.target.files[0])
+            outImageEl.style.visibility = "hidden"
+        }
+
+        uploadBtn = document.getElementById("upload")
+        uploadBtn.addEventListener("click", function() {
+            const url = "/faceapi/detect"
+            var data = new FormData()
+            data.append("img", inputFileEl.files[0])
+
+            fetch(url, {
+                method: 'POST',
+                body: data
+            })
+            .then(response => response.json())
+            .then(data =>{
+                outImageEl.setAttribute("src", data.resp_imgurl)
+                outImageEl.style.visibility = "visible"
+                console.log(data)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+        })
+
+    </script>
+{% endblock %}
+
