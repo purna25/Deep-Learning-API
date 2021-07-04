@@ -19,13 +19,11 @@ def plot_boxes(I, resp):
     for re in resp:
         x1, y1, w, h = re['box']
         cv2.rectangle(I, (x1, y1), (x1 + w, y1 + h), (255, 0, 0), 2)
-        # print(x1, y1, x1 + w, y1 + h)
     return I
 
 
 def detect_view(request):
     if request.method == "POST":
-        "http://0.0.0.0:8000/static/imgs/0.jpeg"
         json_response = {}
         f = request.FILES['img']
         pth, f_name = save_file(f)
